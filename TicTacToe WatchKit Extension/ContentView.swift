@@ -94,6 +94,7 @@ struct ContentView: View {
             }}
         VStack {
             Text(status)
+                .padding(.top, 6.0)
         HStack {
            
             VStack {
