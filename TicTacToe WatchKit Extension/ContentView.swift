@@ -19,32 +19,40 @@ struct ContentView: View {
         winner = ""
         gameOver = false
     }
+
+    func endGame() {
+        sleep(1)
+        gameOver = true
+    }
     
     func checkWinner() {
         if board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != "" {
             winner = board[0][0]
-            gameOver = true
+            endGame()
         } else if board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] != "" {
             winner = board[1][0]
-            gameOver = true
+            endGame()
         } else if board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] != "" {
             winner = board[2][0]
-            gameOver = true
+            endGame()
         } else if board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] != "" {
             winner = board[0][0]
-            gameOver = true
+            endGame()
         } else if board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] != "" {
             winner = board[0][1]
-            gameOver = true
+            endGame()
         } else if board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] != "" {
             winner = board[0][2]
-            gameOver = true
+            endGame()
         } else if board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != "" {
             winner = board[0][0]
-            gameOver = true
+            endGame()
         } else if board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != "" {
             winner = board[0][2]
-            gameOver = true
+            endGame()
+        } else if board[0][0] != "" && board[0][1] != "" && board[0][2] != "" && board[1][0] != "" && board[1][1] != "" && board[1][2] != "" && board[2][0] != "" && board[2][1] != "" && board[2][2] != "" {
+            winner = "Tie"
+            endGame()
         }
     }
     
@@ -63,9 +71,9 @@ struct ContentView: View {
     
     var body: some View {
         
-        if (winner != "") {
+        if (gameOver) {
             VStack {
-                Text("\(winner) won!")
+                Text(winner == "Tie" ? "Tie" : "\(winner) Wins!")
                     .padding(.bottom, 10)
                 Button(action: {
                     reset()
