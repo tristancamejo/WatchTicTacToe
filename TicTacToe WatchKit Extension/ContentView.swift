@@ -12,17 +12,24 @@ struct ContentView: View {
     @State var turn: String = "X"
     @State var winner: String = ""
     @State var gameOver: Bool = false
+    @State var pause: Bool = false
+    @State var status: String = "X's turn"
     
     func reset() {
         board = [["", "", ""], ["", "", ""], ["", "", ""]]
         turn = "X"
         winner = ""
         gameOver = false
+        pause = false
     }
 
     func endGame() {
-        sleep(1)
-        gameOver = true
+        status = winner == "Tie" ? "Tie" : "\(winner) Won!"
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            gameOver = true
+        }
+        
     }
     
     func checkWinner() {
@@ -57,13 +64,17 @@ struct ContentView: View {
     }
     
     func takeTurn(row: Int, col: Int) {
+        if (pause) {return}
+            
         WKInterfaceDevice.current().play(.success)
         if board[row][col] == "" {
             board[row][col] = turn
             if turn == "X" {
                 turn = "O"
+                status = "O's turn"
             } else {
                 turn = "X"
+                status = "X's turn"
             }
         }
         checkWinner()
@@ -73,7 +84,7 @@ struct ContentView: View {
         
         if (gameOver) {
             VStack {
-                Text(winner == "Tie" ? "Tie" : "\(winner) Wins!")
+                Text(winner == "Tie" ? "Tie" : "\(winner) Won!")
                     .padding(.bottom, 10)
                 Button(action: {
                     reset()
@@ -81,14 +92,13 @@ struct ContentView: View {
                     Text("Play again?")
                 }
             }}
-        
+        VStack {
+            Text(status)
         HStack {
+           
             VStack {
                 Button(action: {
                     takeTurn(row: 0, col: 0)
-                    //update ui state
-                    
-                    
                 }, label: {
                     Text(board[0][0])
                 })
@@ -139,6 +149,7 @@ struct ContentView: View {
             }
         }
     }
+}
 }
 
 struct ContentView_Previews: PreviewProvider {
