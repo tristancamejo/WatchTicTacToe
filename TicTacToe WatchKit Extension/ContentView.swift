@@ -18,6 +18,7 @@ struct ContentView: View {
     func reset() {
         board = [["", "", ""], ["", "", ""], ["", "", ""]]
         turn = "X"
+        status = "X's turn"
         winner = ""
         gameOver = false
         pause = false
